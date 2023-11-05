@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct LocationView: View {
+struct LocationsView: View {
     
     @EnvironmentObject private var vm: LocationsViewModel
     
@@ -20,22 +20,33 @@ struct LocationView: View {
             VStack(spacing: 0) {
                 
                 header
-                 .padding()
+                    .padding()
                 
                 Spacer()
-              }
+                ZStack {
+                    ForEach(vm.locations) { location in
+                        
+                        if vm.mapLocation == location {
+                            LocationPreviewView(location: location)
+                                .shadow(color: Color.black.opacity(0.3), radius: 20)
+                                .padding()
+                                .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+                        }
+                    }
+                 }
+               }
             }
         }
     }
 
 
 #Preview {
-    LocationView()
+    LocationsView()
         .environmentObject(LocationsViewModel())
 }
 
 
-extension LocationView {
+extension LocationsView {
     
     private var header: some View {
         VStack {

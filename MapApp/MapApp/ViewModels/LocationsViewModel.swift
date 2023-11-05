@@ -42,7 +42,6 @@ class LocationsViewModel: ObservableObject {
         mapRegion = MKCoordinateRegion(
             center: location.coordinates,
             span: mapSpan)
-        
     }
   }
    func toggleLocationsList() {
@@ -56,5 +55,27 @@ class LocationsViewModel: ObservableObject {
             mapLocation = location
             showLocationsList = false
         }
+    }
+    func nextButtonPressed() {
+        // get the current index
+        guard let currentIndex = locations.firstIndex(where: { $0 == mapLocation}) else {
+            
+            return print("Could not find curremt index locations array!")
+        }
+        
+        //Check if the the currentIndex is valid
+        let nextIndex = currentIndex + 1
+        guard locations.indices.contains(nextIndex) else {
+            // next index is NOT valid
+            //resart from index 0
+            
+            guard let firstLocation = locations.first else  {return}
+            showNextLocation(location: firstLocation)
+            return
+        }
+        
+        //Next index IS valid
+        let nextLocation = locations[nextIndex]
+        showNextLocation(location: nextLocation)
     }
 }
